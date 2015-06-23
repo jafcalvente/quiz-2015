@@ -27,3 +27,8 @@ exports.answer = function(req, res) {
 			respuesta: answer 
 		});
 };
+
+// GET /author
+exports.author = function(req, res) {
+	res.render('author', { author: 'Jose A. Fuentes'});
+};
