@@ -7,35 +7,38 @@ exports.init = function(req, res) {
 	res.render('index', { title: 'Quiz' });
 };
 
-// GET /quizes/question
-exports.question = function(req, res) {
 
-	models.Quiz.findAll().success(function(quiz) {
+// GET /quizes
+exports.index = function(req, res) {
 
-		res.render('quizes/question',
-			{
-				title: 'Quiz',
-				pregunta: quiz[0].pregunta
-			});
+	models.Quiz.findAll().success(function(quizes) {
+
+		res.render('quizes/index', { quizes: quizes });
 	});
 };
 
-// GET /quizes/answer
+// GET /quizes/:quizId
+exports.show = function(req, res) {
+
+	models.Quiz.find(req.params.quizId).then(function(quiz) {
+
+		res.render('quizes/show', { quiz: quiz });
+	});
+};
+
+// GET /quizes/:quizId/answer
 exports.answer = function(req, res) {
 
-	models.Quiz.findAll().success(function(quiz) {
+	models.Quiz.find(req.params.quizId).then(function(quiz) {
 
-		var answer = 'Incorrecto';
-		if (req.query.respuesta && 
-				req.query.respuesta.toUpperCase() === quiz[0].respuesta) {
-			answer = 'Correcto'
-		}
+		var answer = (req.query.respuesta.toUpperCase() === quiz.respuesta) ? 
+			'Correcto' : 'Incorrecto';
 
-		res.render('quizes/answer', 
-			{ 
-				title: 'Quiz',
-				respuesta: answer 
-			});
+		res.render('quizes/answer', { 
+			title: 'Quiz',
+			quiz: quiz,
+			respuesta: answer
+		});
 	});
 };
 
