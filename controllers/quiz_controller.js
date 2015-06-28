@@ -59,7 +59,7 @@ exports.show = function(req, res) {
 // GET /quizes/:quizId/answer
 exports.answer = function(req, res) {
 
-	var result = (req.query.respuesta.toUpperCase() === req.quiz.respuesta) ?
+	var result = (req.query.respuesta.toUpperCase() === req.quiz.respuesta.toUpperCase()) ?
 		'Correcto' : 'Incorrecto';
 
 	res.render('quizes/answer', 
@@ -67,6 +67,27 @@ exports.answer = function(req, res) {
 			quiz: req.quiz, 
 			respuesta : result 
 		});
+};
+
+// GET /quizes/new
+exports.new = function(req, res) {
+
+	var quiz = models.Quiz.build(
+		{	// Crea objeto Quiz no persistido
+			pregunta: 'Pregunta',
+			respuesta: 'Respuesta'
+		});
+	res.render('quizes/new', { quiz: quiz });
+};
+
+// POST /quizes/create
+exports.create = function(req, res) {
+
+	var quiz = models.Quiz.build( req.body.quiz );
+
+	// Guarda quiz en la BBDD
+	quiz.save({ fields: ['pregunta', 'respuesta']})
+	.then(function() { res.redirect('/quizes') });
 };
 
 // GET /author
