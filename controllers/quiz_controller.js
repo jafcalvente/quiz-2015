@@ -24,7 +24,7 @@ exports.load = function(req, res, next, quizId) {
 };
 
 // GET /quizes
-exports.index = function(req, res) {
+exports.index = function(req, res, next) {
 
 	if(req.query.search) {
 		var search = '%' + req.query.search.replace(/\s/g, '%') + '%';
