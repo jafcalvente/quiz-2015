@@ -3,7 +3,7 @@ var models = require('../models/models.js');
 
 // GET /
 exports.init = function(req, res) {
-	res.render('index', { title: 'Quiz' });
+	res.render('index', { title: 'Quiz', errors: [] });
 };
 
 // Autload - Factoriza el código si la ruta incluye :quizId
@@ -35,7 +35,7 @@ exports.index = function(req, res) {
 				order: [[ 'pregunta', 'ASC' ]]
 			})
 		.then(function(quizes) {
-			res.render('quizes/index', { quizes: quizes });
+			res.render('quizes/index', { quizes: quizes, errors: [] });
 		})
 		.catch(function(error) {
 			next(error);
@@ -43,7 +43,7 @@ exports.index = function(req, res) {
 	} else {
 		models.Quiz.findAll()
 		.then(function(quizes) {
-			res.render('quizes/index', { quizes: quizes });
+			res.render('quizes/index', { quizes: quizes, errors: [] });
 		})
 		.catch(function(error) {
 			next(error);
@@ -53,7 +53,7 @@ exports.index = function(req, res) {
 
 // GET /quizes/:quizId
 exports.show = function(req, res) {
-	res.render('quizes/show', { quiz: req.quiz});
+	res.render('quizes/show', { quiz: req.quiz, errors: [] });
 };
 
 // GET /quizes/:quizId/answer
@@ -65,7 +65,8 @@ exports.answer = function(req, res) {
 	res.render('quizes/answer', 
 		{ 
 			quiz: req.quiz, 
-			respuesta : result 
+			respuesta : result,
+			errors: []
 		});
 };
 
@@ -77,7 +78,7 @@ exports.new = function(req, res) {
 			pregunta: 'Pregunta',
 			respuesta: 'Respuesta'
 		});
-	res.render('quizes/new', { quiz: quiz });
+	res.render('quizes/new', { quiz: quiz, errors: [] });
 };
 
 // POST /quizes/create
@@ -85,9 +86,21 @@ exports.create = function(req, res) {
 
 	var quiz = models.Quiz.build( req.body.quiz );
 
-	// Guarda quiz en la BBDD
-	quiz.save({ fields: ['pregunta', 'respuesta']})
-	.then(function() { res.redirect('/quizes') });
+	quiz
+	.validate()
+	.then(function(err) {
+		if (err) {
+			res.render('quizes/new', 
+				{
+					quiz: quiz,
+					errors: err.errors
+				});
+		} else {
+			// Guarda quiz en la BBDD
+			quiz.save({ fields: ['pregunta', 'respuesta']})
+			.then(function() { res.redirect('/quizes') });	
+		}
+	});
 };
 
 // GET /author
