@@ -1,6 +1,7 @@
 <form method='get' action='/quizes/<%= quiz.id %>/answer'>
 
-	<p>Pregunta: <%= quiz.pregunta %></p>
+	<p><span class='orange'>Temética: </span><%= quiz.tema %></p>
+	<p><span class='orange'>Pregunta: </span><%= quiz.pregunta %></p>
 	<input type='text' name='respuesta' placeholder='Responda aquí'/>
 	<input type='submit' value='Enviar'/>
 </form>

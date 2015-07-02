@@ -19,6 +19,14 @@ body {
 	color: black;
 }
 
+.leftAlign {
+	text-align: left;
+}
+
+.orange {
+	color: orange;
+}
+
 section > div {
 	padding: 20px;
 }

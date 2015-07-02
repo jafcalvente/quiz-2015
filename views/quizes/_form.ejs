@@ -4,5 +4,13 @@
 <label for='resp' class='rem'>Respuesta:</label>
 <input type='text' id='resp' name='quiz[respuesta]' value='<%= quiz.respuesta %>'/>
 
+<select name='quiz[tema]'>
+	<option value="Otros" selected>Otros</option>
+	<option value="Geografía">Geografía</option>
+	<option value="Ocio">Ocio</option>
+	<option value="Ciencia">Ciencia</option>
+	<option value="Tecnología">Tecnología</option>
+</select>
+
 <a href="/quizes"><button type='button'>Cancelar</button></a>
 <input type='submit' value='Salvar'/>
