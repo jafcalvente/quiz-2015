@@ -1,4 +1,4 @@
-// importamos el módulo 'models' para poder acceder a las tablas de la BBDD
+// Importamos el módulo 'models' para poder acceder a las tablas de la BBDD
 var models = require('../models/models.js');
 
 // GET /
@@ -9,7 +9,11 @@ exports.init = function(req, res) {
 // Autload - Factoriza el código si la ruta incluye :quizId
 exports.load = function(req, res, next, quizId) {
 
-	models.Quiz.find(quizId)
+	models.Quiz.find(/* quizId */ 
+	{
+		where: { id: Number(quizId) },
+		include: [{ model: models.Comment }]
+	})
 	.then(function(quiz) {
 		if (quiz) {
 			req.quiz = quiz;
