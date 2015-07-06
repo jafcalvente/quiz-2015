@@ -3,6 +3,7 @@ var router = express.Router();
 
 var quizController = require('../controllers/quiz_controller');
 var commentController = require('../controllers/comment_controller');
+var sessionController = require('../controllers/session_controller');
 
 // Página de entrada (home page)
 router.get('/', quizController.init );
@@ -11,6 +12,11 @@ router.get('/', quizController.init );
 // Este middleware se instala antes que 'show' y 'answer' para que se ejecute sólo 
 // en el caso de que la cabecera HTTP (query, body o param) contenga ':quizId'
 router.param('quizId', quizController.load);
+
+// Definición de rutas de sesión
+router.get('/login', sessionController.new);
+router.post('/login', sessionController.create);
+router.get('/logout', sessionController.destroy);
 
 // Definición de rutas de /quizes
 router.get('/quizes', quizController.index);
