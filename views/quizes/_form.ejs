@@ -4,12 +4,12 @@
 <label for='resp' class='rem'>Respuesta:</label>
 <input type='text' id='resp' name='quiz[respuesta]' value='<%= quiz.respuesta %>'/>
 
-<select name='quiz[tema]'>
-	<option value="Otros" selected>Otros</option>
-	<option value="Geografía">Geografía</option>
-	<option value="Ocio">Ocio</option>
-	<option value="Ciencia">Ciencia</option>
-	<option value="Tecnología">Tecnología</option>
+<select name='quiz[tema]' value=''>
+	<option value="Otros" <%= (quiz.tema === "Otros") ? 'selected' : '' %>>Otros</option>
+	<option value="Geografía" <%= (quiz.tema === "Geografía") ? 'selected' : '' %>>Geografía</option>
+	<option value="Ocio" <%= (quiz.tema === "Ocio") ? 'selected' : '' %>>Ocio</option>
+	<option value="Ciencia" <%= (quiz.tema === "Ciencia") ? 'selected' : '' %>>Ciencia</option>
+	<option value="Tecnología" <%= (quiz.tema === "Tecnología") ? 'selected' : '' %>>Tecnología</option>
 </select>
 
 <a href="/quizes"><button type='button'>Cancelar</button></a>
