@@ -12,6 +12,7 @@ router.get('/', quizController.init );
 // Este middleware se instala antes que 'show' y 'answer' para que se ejecute sólo 
 // en el caso de que la cabecera HTTP (query, body o param) contenga ':quizId'
 router.param('quizId', quizController.load);
+router.param('commentId', commentController.load);
 
 // Definición de rutas de sesión
 router.get('/login', sessionController.new);
@@ -31,6 +32,8 @@ router.delete('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizCont
 // Definición de rutas de /comments
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
 router.post('/quizes/:quizId(\\d+)/comments', commentController.create);
+router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', 
+	sessionController.loginRequired, commentController.publish);
 
 // Definición de ruta de /author
 router.get('/author', quizController.author );
