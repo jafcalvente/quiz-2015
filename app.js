@@ -27,6 +27,29 @@ app.use(cookieParser('Quiz 2015'));
 app.use(session());
 app.use(methodOverride('_method'));
 
+// MW que terminará la sesión si han pasado más de dos minutos desde la última transacción
+app.use( function(req, res, next) {
+
+    // Número milisegundos ahora
+    var date = new Date();
+    var msec = date.getTime();
+
+    // Número milisegundos anterior transacción
+    req.session.msecOld = req.session.msecOld || msec;
+
+    // Número de segundos transcurridos
+    var seconds = (msec - req.session.msecOld) / 1000;
+
+    // Si han pasado más de dos minutos eliminamos al usuario en sesión
+    if (seconds > 120) {
+        req.session.user = undefined;
+    }
+
+    // Reiniciamos el contador de tiempo y continuamos
+    req.session.msecOld = msec;
+    next();
+});
+
 // Helpers dinámicos
 app.use( function(req, res, next) {
 
